@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app3-whoami-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app3-whoami
+  template:
+    metadata:
+      labels:
+        app: app3-whoami
+    spec:
+      containers:
+      - name: whoami
+        image: traefik/whoami
+        ports:
+        - containerPort: 80

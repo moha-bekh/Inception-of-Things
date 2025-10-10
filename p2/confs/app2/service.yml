@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app2-apache-service
+spec:
+  selector:
+    app: app2-apache
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
