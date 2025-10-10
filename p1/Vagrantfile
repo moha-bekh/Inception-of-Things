@@ -1,31 +1,34 @@
-
 Vagrant.configure("2") do |config|
 
   config.vm.box = "generic/ubuntu2204"
 
   config.vm.synced_folder "confs", "/vagrant/confs"
 
-  config.vm.define "mbekheirS", primary: true do |master|
-    master.vm.hostname = "mbekheirS"
-    master.vm.network "private_network", ip: "192.168.56.10"
-    
-    master.vm.provider "libvirt" do |libvirt|
-      libvirt.memory = 2048
-      libvirt.cpus = 2
+  config.vm.define "mbekheirS", primary: true do |controller|
+    controller.vm.hostname = "mbekheirS"
+    controller.vm.network "private_network", ip: "192.168.56.10"
+
+    controller.vm.provider "virtualbox" do |vb|
+      vb.memory = 2048
+      vb.cpus = 2
+      vb.name = "k3s-controller-mbekheirS"
+	#   vb.gui = true
     end
 
-    master.vm.provision "shell", path: "./scripts/master.sh"
+    controller.vm.provision "shell", path: "scripts/controller.sh"
   end
 
-  config.vm.define "fzayaniSW" do |node|
-    node.vm.hostname = "fzayaniSW"
-    node.vm.network "private_network", ip: "192.168.56.11"
+  config.vm.define "fzayaniSW" do |agent|
+    agent.vm.hostname = "fzayaniSW"
+    agent.vm.network "private_network", ip: "192.168.56.11"
     
-    node.vm.provider "libvirt" do |libvirt|
-      libvirt.memory = 2048
-      libvirt.cpus = 2
+    agent.vm.provider "virtualbox" do |vb|
+      vb.memory = 2048
+      vb.cpus = 2
+      vb.name = "k3s-agent-fzayaniSW"
+	#   vb.gui = true
     end
 
-    node.vm.provision "shell", path: "./scripts/agent.sh"
+    agent.vm.provision "shell", path: "scripts/agent.sh"
   end
 end
