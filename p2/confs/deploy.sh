@@ -1,6 +1,15 @@
 #!/bin/bash
 
-kubectl apply -f /home/vagrant/confs/ingress.yml
-kubectl apply -f /home/vagrant/confs/app1
-kubectl apply -f /home/vagrant/confs/app2
-kubectl apply -f /home/vagrant/confs/app3
+set -e
+
+CONFS=/home/vagrant/confs
+TARGETS=(
+    "ingress.yml"
+    "app1"
+    "app2"
+    "app3"
+)
+
+for TARGET in "${TARGETS[@]}"; do
+	kubectl apply -f "$CONFS/$TARGET"
+done

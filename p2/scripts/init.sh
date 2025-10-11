@@ -2,13 +2,14 @@
 
 set -e
 
-sudo mkdir -p /home/vagrant/confs
-sudo mkdir -p /home/vagrant/.local/bin
-sudo ln -sf /home/vagrant/confs/deploy.sh /home/vagrant/.local/bin/deploy
+HOME=/home/vagrant
+CONFS=$HOME/confs
 
-sudo apt install -y make
+sudo mkdir -p $CONFS
+sudo mkdir -p $HOME/.local/bin
+sudo ln -sf $CONFS/deploy.sh $HOME/.local/bin/deploy
 
-echo "export PATH=$PATH:/home/vagrant/.local/bin" >> /home/vagrant/.bashrc
-source /home/vagrant/.bashrc
+echo "export PATH=$PATH:$HOME/.local/bin" >> $HOME/.bashrc
+source $HOME/.bashrc
 
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig-mode=644" sh -s - --node-ip 192.168.56.110

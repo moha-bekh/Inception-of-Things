@@ -4,9 +4,7 @@ metadata:
   name: all-apps-ingress
 spec:
   ingressClassName: traefik
-
   rules:
-
   - host: "app1.com"
     http:
       paths:
