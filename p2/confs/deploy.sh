@@ -4,10 +4,10 @@ set -e
 
 CONFS=/home/vagrant/confs
 TARGETS=(
-    "ingress.yml"
     "app1"
     "app2"
     "app3"
+    "ingress.yml"
 )
 
 for TARGET in "${TARGETS[@]}"; do

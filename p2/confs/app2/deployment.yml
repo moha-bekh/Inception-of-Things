@@ -13,7 +13,10 @@ spec:
         app: app2-apache
     spec:
       containers:
-      - name: httpd
-        image: httpd:latest
+      - name: nginx
+        image: nginx:stable-alpine
+        command: ["/bin/sh", "-c"]
+        args:
+        - echo "app2" > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'
         ports:
         - containerPort: 80
