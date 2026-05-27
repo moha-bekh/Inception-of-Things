@@ -1,5 +1,5 @@
-ARGO_PORT ?= 8081
-APP_PORT ?= 8082
+ARGO_PORT ?= 8080
+APP_PORT ?= 8888
 
 all: install build
 
@@ -7,7 +7,7 @@ build:
 	@./scripts/build.sh
 
 install:
-	@./scripts/install.sh
+	@sudo ./scripts/install.sh
 
 argo-port:
 	@kubectl port-forward svc/argocd-server -n argocd $(ARGO_PORT):443
@@ -17,8 +17,6 @@ app-port:
 
 fclean:
 	@k3d cluster delete argo-cluster || true
-	@kubectl delete namespace argocd || true
-	@kubectl delete namespace dev || true
 
 show:
 	@kubectl get nodes

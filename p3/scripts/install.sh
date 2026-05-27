@@ -1,18 +1,26 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 if [[ "$EUID" -ne 0 ]]; then
-  echo "⚠️  need sudo or to be root. Retry: sudo $0"
+  echo "Need sudo or root. Retry: sudo $0"
+  exit 1
+fi
+
+if ! command -v pacman &> /dev/null; then
+  echo "This install script expects an Arch-based VM with pacman."
   exit 1
 fi
 
 pacman -Syu --noconfirm
-pacman -S --noconfirm docker kubectl
+pacman -S --noconfirm curl docker kubectl
 
 systemctl enable --now docker.service
-if ! getent group docker | grep -q "\b$SUDO_USER\b"; then
-  usermod -aG docker "$SUDO_USER"
+
+TARGET_USER="${SUDO_USER:-}"
+if [[ -n "$TARGET_USER" ]] && ! getent group docker | grep -q "\b$TARGET_USER\b"; then
+  usermod -aG docker "$TARGET_USER"
+  echo "User '$TARGET_USER' was added to the docker group. Reopen the shell if docker is still denied."
 fi
 
 if ! command -v k3d &> /dev/null; then
