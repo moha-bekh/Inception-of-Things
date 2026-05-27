@@ -8,7 +8,7 @@ CONFS=$HOME/confs
 sudo mkdir -p $CONFS
 rm -rf $CONFS/node-token
 
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig-mode=644" sh -s - --node-ip 192.168.56.10
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig-mode=644" sh -s - --node-ip 192.168.56.110
 
 sleep 10
 
