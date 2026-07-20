@@ -1,32 +1,33 @@
 Vagrant.configure("2") do |config|
 
-  config.vm.box = "generic/ubuntu2204"
-
+  config.vm.box = "bento/ubuntu-26.04"
   config.vm.synced_folder "confs", "/home/vagrant/confs"
+	config.vm.boot_timeout = 600
 
   config.vm.define "mbekheirS", primary: true do |controller|
     controller.vm.hostname = "mbekheirS"
     controller.vm.network "private_network", ip: "192.168.56.110"
 
     controller.vm.provider "virtualbox" do |vb|
-      vb.memory = 1024
-      vb.cpus = 1
+      vb.memory = 2048
+      vb.cpus = 2
       vb.name = "k3s-controller-mbekheirS"
     end
 
     controller.vm.provision "shell", path: "scripts/controller.sh"
   end
 
-  config.vm.define "fzayaniSW" do |agent|
-    agent.vm.hostname = "fzayaniSW"
+  config.vm.define "mbekheirSW" do |agent|
+    agent.vm.hostname = "mbekheirSW"
     agent.vm.network "private_network", ip: "192.168.56.111"
     
     agent.vm.provider "virtualbox" do |vb|
-      vb.memory = 1024
-      vb.cpus = 1
-      vb.name = "k3s-agent-fzayaniSW"
+      vb.memory = 2048
+      vb.cpus = 2
+      vb.name = "k3s-agent-mbekheirSW"
     end
 
     agent.vm.provision "shell", path: "scripts/agent.sh"
+
   end
 end
