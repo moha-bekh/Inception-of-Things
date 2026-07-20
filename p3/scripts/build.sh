@@ -23,7 +23,8 @@ fi
 kubectl create namespace "$ARGOCD_NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
 kubectl create namespace "$DEV_NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
 
-kubectl apply -n "$ARGOCD_NAMESPACE" -f "$ARGOCD_MANIFEST_URL"
+# Argo CD CRDs exceed Kubernetes' client-side apply annotation limit (256 KiB).
+kubectl apply --server-side --force-conflicts -n "$ARGOCD_NAMESPACE" -f "$ARGOCD_MANIFEST_URL"
 kubectl wait --for=condition=Established crd/applications.argoproj.io --timeout=180s
 kubectl wait --for=condition=Available deployment/argocd-server -n "$ARGOCD_NAMESPACE" --timeout=300s
 kubectl wait --for=condition=Available deployment/argocd-repo-server -n "$ARGOCD_NAMESPACE" --timeout=300s

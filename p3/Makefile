@@ -33,3 +33,5 @@ show-dev:
 	@kubectl get pods -n dev
 	@kubectl get svc -n dev
 	@kubectl get deployments -n dev
+
+re: fclean all
