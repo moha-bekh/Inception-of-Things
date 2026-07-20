@@ -1,0 +1,52 @@
+# GitLab 18.11 (chart 9.11.8) is the last official chart version that bundles
+# PostgreSQL, Redis and MinIO.  Newer charts require those services (and object
+# storage) to be provided externally, which is outside this self-contained lab.
+global:
+  edition: ce
+  hosts:
+    domain: local.gitlab
+    https: false
+  ingress:
+    enabled: false
+
+# The bundled MinIO instance is used for uploads, artifacts, LFS and backups.
+# Do not configure external object-storage secrets for this local installation.
+minio:
+  persistence:
+    size: 2Gi
+
+postgresql:
+  primary:
+    persistence:
+      size: 4Gi
+
+gitlab:
+  # Kubernetes Agent Server and the container registry are unrelated to this
+  # GitOps exercise and consume a significant amount of memory.
+  kas:
+    enabled: false
+  registry:
+    enabled: false
+  webservice:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1Gi
+  sidekiq:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+
+prometheus:
+  install: false
+
+gitlab-runner:
+  install: false
+
+nginx-ingress:
+  enabled: false
+
+# Required by the chart even when ingress is disabled.
+certmanager-issuer:
+  email: root@local.gitlab
